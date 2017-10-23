@@ -24,15 +24,23 @@ var Comment = Backbone.Model.extend({
   /* The argument passed to `initialize` is what the model is instantiated with:
    * in `new Comment(message)`, message will be passed to `initialize`. */
   initialize: function(message) {
+    this.set('message', message)
+    this.set('votes', 0)
     /* Set the initial values for `votes` to 0 and `message` to the message.
      * Remember to use setters when working with attributes! */
   },
   votes: function() {
+    return this.get('votes')
     /* Return the votes attribute on this model.
      * Remember to use a getter when working with attributes! */
   },
   upvote: function(){
     // Set the `votes` attribute to the current vote count plus one.
+    // var current = this.get('votes') + 1 
+    return this.set('votes', this.get('votes') + 1)
+  },
+  downvote: function(){ 
+    this.set('votes', this.get('votes') - 1)
   }
   // Add a downvote function; don't forget the comma above.
 });
@@ -108,6 +116,8 @@ var CommentView = Backbone.View.extend({
      * Rendering now becomes as simple as setting the $el's html: */
     return this.$el.html(html);
 
+    // $('id').append()
+
     /* We're also returning the $el. It's already been modified and updated,
      * but it is not on the page yet.
      * In a couple lines, we will put it onto the page; then we can modify it
@@ -137,7 +147,7 @@ var commentView = new CommentView({ model: comment });
  */
 
 // Append the view to the page. This is why we returned html from `render`:
-// $('body').append(commentView.render());
+$('body').append(commentView.render());
 
 /* The number of votes should be 0.
  * We set that as the initial default value in the comment model.
@@ -145,7 +155,9 @@ var commentView = new CommentView({ model: comment });
  * Let's change it and see our eventlistener in action.
  * Uncomment the line below and reload the page,
  * and it should say '1' to the left of the comment. */
-// comment.upvote();
+comment.upvote();
+comment.downvote();
+
 
 /* play with this in your console as well.
  * You can modify the comment object in the same way we just did:
